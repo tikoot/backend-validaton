@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Basic Form Validation</title>
+	<title>Basic Form Validation - jQuery</title>
 </head>
 
 <body>
 	
-	<h1>Basic Form with JavaScript Validation</h1>
-
-	<form action="processor.php" method="post" id="myform">
+	<h1>Basic Form Validation - jQuery</h1>
+	
+	<form action="processor.php" method="post" id="myForm">
     
     	<p><label for="name">Name</label><br>
 		<input id="name" name="name" type="text"><span id="name-err"></span></p>
@@ -21,73 +21,59 @@
         <input id="url" name="url" type="text"><span id="url-err"></span></p>
         
         <p><label for="comments">Comments</label><span id="comments-err"></span><br>
-    	<textarea id="comments" name="comments" cols="40" rows="10"></textarea></p>
+    	<textarea id="comments" name="comments" cols="40" rows="10" class="required"></textarea></p>
         
-        <p><input name="send" type="submit" value="send it"></p>
+        <p><input id="send"  name="send" type="submit" value="send it" /></p>
     
     </form>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	
 	<script>
 
-		document.getElementById('myform').onsubmit = validateForm;
+		var re_name = /^[a-zA-Z]+(([\'\- ][a-zA-Z])?[a-zA-Z]*)*$/;
+		var re_email = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+		var re_url = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+		var counter = 0;
 
-		function validateForm()
-		{
-			var reName = /^[a-zA-Z]+(([\'\- ][a-zA-Z])?[a-zA-Z]*)*$/;
-			var reEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-			var reURL = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+		$("#myForm").submit( function( event ){ 
+			var name = $('#name').val();
+			var email = $('#email').val();
+			var url = $('#url').val();
+			var comments = $('#comments').val();
 
-			document.getElementById('name-err').innerHTML="";
-			document.getElementById('email-err').innerHTML="";
-			document.getElementById('url-err').innerHTML="";
-			document.getElementById('comments-err').innerHTML="";
+			$('#myForm span').html('').css('color', 'red');
+			counter = 0;
 
-			var counter=0;
-
-			if( !reName.test(document.getElementById('name').value) )
+			if( !re_name.test(name) )
 			{
-				fixForm( document.getElementById('name'), "Please provide a proper name" );
+				$('#name-err').html("Please enter a valid name");
 				counter++;
 			}
 
-			if( !reEmail.test(document.getElementById('email').value) )
+			if( !re_email.test(email) )
 			{
-				fixForm( document.getElementById('email'), "Please type add a valid email address" );
+				$('#email-err').html("Please enter a valid email");
 				counter++;
 			}
 
-			var url = document.getElementById('url');
-			if( url.value != "" && !reURL.test(url.value) )
+			if( url !="" && !re_url.test(url) )
 			{
-				fixForm( url, "Please type a valid URL in the form of 'http://example.com'" );
+				$('#url-err').html("Please enter a valid URL");
 				counter++;
 			}
 
-			if( document.getElementById('comments').value == "" )
+			if( comments == '' )
 			{
-				fixForm( document.getElementById('comments'), "Please provide some comments" );
-				counter++;
+			  $('#comments-err').html(" Please give me a comment!");
+			  counter++;
 			}
 
-			if(counter > 0)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
+			if( counter > 0){ event.preventDefault(); }
 
-		function fixForm(field, message)
-		{
-			var errorMessage = field.id + "-err";
-			document.getElementById(errorMessage).innerHTML = message;
-			document.getElementById(errorMessage).style.color = "red";
-			document.getElementById(field.id).focus();
-		}
+		} );
 
 	</script>
 
 </body>
 </html>
-

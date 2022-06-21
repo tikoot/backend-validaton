@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>Form Processor</title>
+<meta charset="UTF-8">
+<title>Form Processor</title>
 </head>
 
 <body>
