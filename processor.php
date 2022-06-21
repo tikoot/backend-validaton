@@ -18,18 +18,26 @@
 		$url = $_POST['url'];
 		$comments = $_POST['comments'];
 		$submit = $_POST['send'];
+		
+		if( !empty($name) && !empty($email) && !empty($comments) )
+        {
+            
+            $re_email = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/";
+            
+            if( preg_match($re_email, $email) )
+            {
                  
-
-	if(!empty($name) && !empty($email) && !empty($comments)){
-		echo "<p>Name: $name</p>";
-		echo "<p>Email: $email</p>";
-		echo "<p>URL: $url</p>";
-		echo "<p>Comments: $comments</p>";
-		echo "<p>$submit</p>";
-    }else {
-		echo "<p>You didn't fill all the required fields</p>";
-	}
-}
+                echo "<p>Name: $name</p>";
+                echo "<p>Email: $email</p>";
+                echo "<p>URL: $url</p>";
+                echo "<p>Comments: $comments</p>";
+                echo "<p>$submit</p>";
+            }
+            else { echo "<p>you did not format your email properly</p>"; }
+        }
+        else { echo "<p>You did not fill in the required fields</p>"; }
+    }
+    
     ?>
 
 </body>
